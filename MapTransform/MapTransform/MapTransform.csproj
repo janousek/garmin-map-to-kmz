@@ -127,6 +127,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CornerCoordinates.cs" />
+    <Compile Include="GarminKmzBuilder.cs" />
+    <Compile Include="MapImageBuilder.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="TiffJsonInfo.cs" />

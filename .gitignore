@@ -2,3 +2,7 @@
 /MapTransform/MapTransform/obj/
 /MapTransform/packages/
 /MapTransform/.vs/MapTransform/v14/*.suo
+/MapTransform/Core/obj/
+/MapTransform/Core/bin/
+/MapTransform/CustomImageMapWeb/node_modules/
+/MapTransform/.vs/restore.dg

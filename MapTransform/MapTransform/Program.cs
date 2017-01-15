@@ -1,4 +1,5 @@
 ﻿
+using Core;
 using ImageMagick;
 using Newtonsoft.Json;
 using SharpKml.Dom;
@@ -71,18 +72,18 @@ namespace MapTransform
             };
 
 
-            string src_filename = "mapa.jpg";
-            string dest_jpg = "result.jpg";
+            string srcFilename = "mapa.jpg";
+            string destJpg = "result.jpg";
 
             MapImageBuilder mapBuilder = new MapImageBuilder();
 
-            string infoJson = mapBuilder.Build(src_filename, dest_jpg, gcp, workDir);
+            string infoJson = mapBuilder.Build(srcFilename, destJpg, gcp, workDir);
 
             string infoJsonName = "info.json";
             File.WriteAllText(Path.Combine(workDir.FullName, infoJsonName), infoJson);
             
             GarminKmzBuilder kmzBuilder = new GarminKmzBuilder();
-            kmzBuilder.Build(workDir, infoJsonName, dest_jpg, mapName);
+            kmzBuilder.Build(workDir, infoJsonName, destJpg, mapName);
 
         }
 

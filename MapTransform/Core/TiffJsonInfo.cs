@@ -4,12 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapTransform
+namespace Core
 {
     class TiffJsonInfo
     {
         public CornerCoordinates CornerCoordinates { get; set; }
     }
-
-   
 }

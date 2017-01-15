@@ -10,9 +10,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapTransform
+namespace Core
 {
-    class GarminKmzBuilder
+    public class GarminKmzBuilder
     {
         public void Build(DirectoryInfo workDir, string infoJsonName, string mapJpg, string mapName)
         {

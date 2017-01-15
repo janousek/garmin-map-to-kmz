@@ -1,0 +1,30 @@
+{
+  "name": "custom_image_map",
+  "version": "0.0.1",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-continuous-concat": "^0.1.1",
+    "gulp-cssmin": "^0.1.7",
+    "gulp-less": "^3.3.0",
+    "gulp-uglify": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-gzip": "^1.4.0",
+    "gulp-watch": "^4.3.11",
+    "gulp-remember": "^0.3.1",
+    "gulp-cached": "^1.1.1",
+    "gulp-rebase-css-urls": "^0.0.2",
+    "gulp-css-url-adjuster": "^0.2.3",
+    "gulp-wrap": "^0.13.0",
+    "gulp-typescript": "^3.1.4",
+    "gulp-plumber": "^1.1.0",
+    "gulp-util": "^3.0.8",
+    "graceful-fs": "^4.1.11",
+    "gulp-run": "^1.7.1",
+
+
+
+    "leaflet": "^1.0.2"
+  }
+
+}

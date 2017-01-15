@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapTransform
+namespace Core
 {
-    class CornerCoordinates
+    public class CornerCoordinates
     {
         public double[] UpperLeft { get; set; }
         public double[] LowerLeft { get; set; }

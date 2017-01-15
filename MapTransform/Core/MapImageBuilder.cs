@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MapTransform
+namespace Core
 {
-    class MapImageBuilder
+    public class MapImageBuilder
     {
-        public string Build(string src_filename, string dest_jpg, List<double> gcp, DirectoryInfo workDir)
+        public string Build(string srcFilename, string destJpg, List<double> gcp, DirectoryInfo workDir)
         {
-            string resample_options = "near";
+            string resampleOptions = "near";
 
 
 
@@ -23,38 +23,38 @@ namespace MapTransform
                 gcpItems.Add(" -gcp " + gcp[i + 0].ToString(CultureInfo.InvariantCulture) + ", " + gcp[i + 1].ToString(CultureInfo.InvariantCulture) + ", " + gcp[i + 2].ToString(CultureInfo.InvariantCulture) + ", " + gcp[i + 3].ToString(CultureInfo.InvariantCulture));
             }
 
-            string gcp_string = string.Join(" ", gcpItems);
-            
-
-            File.Copy(src_filename, Path.Combine(workDir.FullName, src_filename), true);
-
-            string temp_filename = "temp";
+            string gcpString = string.Join(" ", gcpItems);
 
 
-            Execute(workDir, "gdal_translate", $"-a_srs '+init=epsg:4326' -of VRT {src_filename} {temp_filename}.vrt {gcp_string}");
+            File.Copy(srcFilename, Path.Combine(workDir.FullName, srcFilename), true);
 
-            string transform_options = "";
-            string mask_options = "";
-            string dest_filename = "result.tiff";
+            string tempFilename = "temp";
 
-            if (File.Exists(Path.Combine(workDir.FullName, dest_filename)))
+
+            Execute(workDir, "gdal_translate", $"-a_srs '+init=epsg:4326' -of VRT {srcFilename} {tempFilename}.vrt {gcpString}");
+
+            string transformOptions = "";
+            string maskOptions = "";
+            string destFilename = "result.tiff";
+
+            if (File.Exists(Path.Combine(workDir.FullName, destFilename)))
             {
-                File.Delete(Path.Combine(workDir.FullName, dest_filename));
+                File.Delete(Path.Combine(workDir.FullName, destFilename));
             }
 
-            Execute(workDir, "gdalwarp", $"-dstalpha {mask_options} {transform_options} -r {resample_options} -s_srs EPSG:4326 {temp_filename}.vrt {dest_filename} -co TILED=YES -co COMPRESS=LZW");
+            Execute(workDir, "gdalwarp", $"-dstalpha {maskOptions} {transformOptions} -r {resampleOptions} -s_srs EPSG:4326 {tempFilename}.vrt {destFilename} -co TILED=YES -co COMPRESS=LZW");
 
 
-            Execute(workDir, "gdaladdo", $"-r average {dest_filename} 2 4 8 16 32 64");
+            Execute(workDir, "gdaladdo", $"-r average {destFilename} 2 4 8 16 32 64");
 
 
-            string infoJson = Execute(workDir, "gdalinfo", $"-json {dest_filename}");
+            string infoJson = Execute(workDir, "gdalinfo", $"-json {destFilename}");
 
             // options for "-co"
             // JPG http://www.gdal.org/frmt_jpeg.html
             // PNG: http://www.gdal.org/frmt_various.html#PNG
 
-            Execute(workDir, "gdal_translate", $"-of JPEG -scale -co worldfile=yes {dest_filename} {dest_jpg}");
+            Execute(workDir, "gdal_translate", $"-of JPEG -scale -co worldfile=yes {destFilename} {destJpg}");
 
             return infoJson;
         }

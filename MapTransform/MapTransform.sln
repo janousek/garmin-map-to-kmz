@@ -5,6 +5,10 @@ VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MapTransform", "MapTransform\MapTransform.csproj", "{A109CF54-34A0-4ACF-BE85-94C11BD3B1EE}"
 EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "CustomImageMapWeb", "CustomImageMapWeb\CustomImageMapWeb.xproj", "{9C1011F6-7910-4037-A053-88BDFF5EFDD3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{00D28E63-080B-4A8D-8C8B-4A5E7677E544}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +19,14 @@ Global
 		{A109CF54-34A0-4ACF-BE85-94C11BD3B1EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A109CF54-34A0-4ACF-BE85-94C11BD3B1EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A109CF54-34A0-4ACF-BE85-94C11BD3B1EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C1011F6-7910-4037-A053-88BDFF5EFDD3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C1011F6-7910-4037-A053-88BDFF5EFDD3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C1011F6-7910-4037-A053-88BDFF5EFDD3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C1011F6-7910-4037-A053-88BDFF5EFDD3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00D28E63-080B-4A8D-8C8B-4A5E7677E544}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00D28E63-080B-4A8D-8C8B-4A5E7677E544}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00D28E63-080B-4A8D-8C8B-4A5E7677E544}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00D28E63-080B-4A8D-8C8B-4A5E7677E544}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

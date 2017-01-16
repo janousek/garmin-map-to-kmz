@@ -14,16 +14,16 @@ namespace Core
 {
     public class GarminKmzBuilder
     {
-        public void Build(DirectoryInfo workDir, string infoJsonName, string mapJpg, string mapName)
+        public void Build(DirectoryInfo workDir, string infoJsonName, string mapPath, string mapName)
         {
-            List<GroundOverlay> overlays = PrepareOverlays(workDir, infoJsonName, mapJpg);
+            List<GroundOverlay> overlays = PrepareOverlays(workDir, infoJsonName, mapPath);
 
             BuildKmz(workDir, mapName, overlays);
         }
 
 
 
-        private List<GroundOverlay> PrepareOverlays(DirectoryInfo workDir, string infoJsonName, string mapJpg)
+        private List<GroundOverlay> PrepareOverlays(DirectoryInfo workDir, string infoJsonName, string mapPath)
         {
 
             string jsonInfo = File.ReadAllText(Path.Combine(workDir.FullName, infoJsonName));
@@ -40,7 +40,7 @@ namespace Core
             DirectoryInfo filesDir = new DirectoryInfo(Path.Combine(workDir.FullName, "files"));
             if (!filesDir.Exists) { filesDir.Create(); }
 
-            using (MagickImage img = new MagickImage(new FileInfo(Path.Combine(workDir.FullName, mapJpg))))
+            using (MagickImage img = new MagickImage(new FileInfo(mapPath)))
             {
 
                 int mapWidth = img.Width;

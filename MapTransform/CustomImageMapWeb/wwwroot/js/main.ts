@@ -31,15 +31,30 @@ class MapWarper {
     private markerStore: MarkerStore = new MarkerStore();
 
     constructor(map1PlaceholderId: string, map2PlaceholderId: string) {
+        var googleRoadsLayer = L.gridLayer.googleMutant({
+            type: 'roadmap' // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+        });;
+
+        let osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        });
+
+
         this.map = L
-            .map(map1PlaceholderId)
+            .map(map1PlaceholderId, {
+                layers: [googleRoadsLayer]
+            })
             .setView([51.505, -0.09], 13);
 
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-        })
-            .addTo(this.map);
 
+
+        L.control.layers(
+            {
+                'Google Roads': googleRoadsLayer,
+                'OSM': osmLayer
+            }, {
+            })
+            .addTo(this.map);
 
         // --
 
@@ -130,44 +145,77 @@ class MapWarper {
 
 
 
+class PreviewMap {
+    private map: L.Map;
+    private overlay: L.ImageOverlay = null;
+
+    private opacitySlider: L.Control.opacitySlider = null;
+     
+    constructor(placeholderId: string) {
+
+        var googleRoadsLayer = L.gridLayer.googleMutant({
+            type: 'roadmap' // valid values are 'roadmap', 'satellite', 'terrain' and 'hybrid'
+        });;
+
+        let osmLayer = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        });
+        
+
+        this.map = L
+            .map(placeholderId, {
+                layers: [googleRoadsLayer]
+            })
+            .setView([51.505, -0.09], 13);
+
+
+
+        L.control.layers(
+            {
+                'Google Roads': googleRoadsLayer,
+                'OSM': osmLayer
+            }, {
+            })
+            .addTo(this.map);
+
+        
+        this.opacitySlider = new L.Control.opacitySlider();
+        this.map.addControl(this.opacitySlider);
+
+        
+    }
+
+    public show(jpgUrl: string, jpgCornerCoordinates: {
+        upperLeft: [number, number];
+        lowerLeft: [number, number];
+        upperRight: [number, number];
+        lowerRight: [number, number];
+    })
+    {
+        if (this.overlay != null) {
+            this.overlay.removeFrom(this.map);
+        }
+
+        var imageBounds: [number, number][] = [[jpgCornerCoordinates.upperLeft[1], jpgCornerCoordinates.upperLeft[0]], [jpgCornerCoordinates.lowerRight[1], jpgCornerCoordinates.lowerRight[0]]];
+        
+        this.overlay = L
+            .imageOverlay(jpgUrl, imageBounds, {
+                opacity: .6
+            })
+            .addTo(this.map);
+
+
+        this.opacitySlider.setOpacityLayer(this.overlay);
+    }
+}
+
+
+
 let warper = new MapWarper('map1', 'map2');
 warper.loadImage('./ordesa.jpg');
 
-/*
-map.addEventListener('click', function (e) {
-    
 
-    let marker = L
-        .marker(e.latlng, {
-            draggable: true
-        })
-        .addTo(map);
-
-});
-
-*/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+let previewMap = new PreviewMap('preview-map');
 
 
 let points = [
@@ -222,23 +270,6 @@ document.getElementById('add-marker').addEventListener('click', (e) => {
 });
 
 
-/*
-document.getElementById('create-map').addEventListener('click', (e) => {
-
-    let result = [];
-    for (let pair of markerPairs) {
-
-        let latLng = pair[0].getLatLng();
-        let xy = imgMap.project(pair[1].getLatLng(), imgMap.getZoom());
-
-        result.push([xy.x, xy.y, latLng.lat, latLng.lng]);
-    }
-
-    console.log(result);
-});
-*/
-
-
 
 document.getElementById('preview').addEventListener('click', (e) => {
     let data = new FormData();
@@ -256,7 +287,18 @@ document.getElementById('preview').addEventListener('click', (e) => {
         processData: false,
         type: 'POST',
         success: function (data) {
+
+            previewMap.show(data.jpgUrl, data.jpgCornerCoordinates);
             console.log(data);
         }
     });
 });
+
+
+
+let json = '{"jpgUrl":"/result.jpg","jpgCornerCoordinates":{"upperLeft":[-0.216215,42.7543907],"lowerLeft":[-0.216215,42.4956674],"upperRight":[0.2593904,42.7543907],"lowerRight":[0.2593904,42.4956674]}}';
+
+
+let jsonData = JSON.parse(json);
+
+previewMap.show(jsonData.jpgUrl, jsonData.jpgCornerCoordinates);

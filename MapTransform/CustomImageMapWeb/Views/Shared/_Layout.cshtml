@@ -6,13 +6,23 @@
     <title>@ViewData["Title"]</title>
 
     <link rel="stylesheet" type="text/css" href="~/libs/leaflet/leaflet.css" />
+    <link rel="stylesheet" type="text/css" href="~/libs/jquery-ui.min.css" />
+    
+    <link rel="stylesheet" type="text/css" href="~/css/OpacityControls.css" />
 </head>
 <body>
 
     @RenderBody()
 
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAc-boZoR-XIR3YWxQ1khajJ4X0bFsvRis" async defer></script>
+
     <script src="~/libs/leaflet/leaflet.js"></script>
     <script src="~/libs/jquery.min.js"></script>
+    <script src="~/libs/jquery-ui.min.js"></script>
+    <script src="~/js/OpacityControls.js"></script>
+    <script src="~/libs/Leaflet.GoogleMutant.js"></script>
+
+    
     <script src="~/js/main.js"></script>
 </body>
 </html>

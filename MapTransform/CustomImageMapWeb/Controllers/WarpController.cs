@@ -8,6 +8,7 @@ using Core;
 using Microsoft.AspNetCore.Hosting;
 using CustomImageMapWeb.Core;
 using System.Globalization;
+using Newtonsoft.Json;
 
 namespace CustomImageMapWeb.Controllers
 {
@@ -42,24 +43,26 @@ namespace CustomImageMapWeb.Controllers
             DirectoryInfo gdalDir = new DirectoryInfo(Path.Combine(appDataPath, "./gdal/"));
 
 
-            string srcFilename = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("mapa.jpg").PhysicalPath;
-            string destJpg = "result.jpg";
+            string srcFilePath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("mapa.jpg").PhysicalPath;
+            string destPath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("result.jpg").PhysicalPath;
 
             MapImageBuilder mapBuilder = new MapImageBuilder();
 
-            string infoJson = mapBuilder.Build(gdalDir, srcFilename, destJpg, form.Gcp.Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToList(), workDir);
+            string infoJson = mapBuilder.Build(gdalDir, srcFilePath, destPath, form.Gcp.Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToList(), workDir);
 
             string infoJsonName = "info.json";
             System.IO.File.WriteAllText(Path.Combine(workDir.FullName, infoJsonName), infoJson);
 
             GarminKmzBuilder kmzBuilder = new GarminKmzBuilder();
-            kmzBuilder.Build(workDir, infoJsonName, destJpg, mapName);
+            kmzBuilder.Build(workDir, infoJsonName, destPath, mapName);
 
 
-
+            
+            TiffJsonInfo info = JsonConvert.DeserializeObject<TiffJsonInfo>(infoJson);
 
             return new JsonResult(new {
-
+                JpgUrl = Url.Content("~/result.jpg"),
+                JpgCornerCoordinates = info.CornerCoordinates
             });
         }
         

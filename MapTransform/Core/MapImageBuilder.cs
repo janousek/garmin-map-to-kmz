@@ -11,7 +11,7 @@ namespace Core
 {
     public class MapImageBuilder
     {
-        public string Build(DirectoryInfo gdalDir, string srcFilePath, string destJpg, List<double> gcp, DirectoryInfo workDir)
+        public string Build(DirectoryInfo gdalDir, string srcFilePath, string destPath, List<double> gcp, DirectoryInfo workDir)
         {
 
 
@@ -57,7 +57,12 @@ namespace Core
             // JPG http://www.gdal.org/frmt_jpeg.html
             // PNG: http://www.gdal.org/frmt_various.html#PNG
 
+            string destJpg = "result.jpg";
+
             Execute(gdalDir, workDir, "gdal_translate", $"-of JPEG -scale -co worldfile=yes {destFilename} {destJpg}");
+
+
+            File.Copy(Path.Combine(workDir.FullName, destJpg), destPath, true);
 
             return infoJson;
         }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core
 {
-    class TiffJsonInfo
+    public class TiffJsonInfo
     {
         public CornerCoordinates CornerCoordinates { get; set; }
     }

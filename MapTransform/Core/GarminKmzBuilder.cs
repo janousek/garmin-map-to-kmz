@@ -37,6 +37,8 @@ namespace Core
             double h = 600;
 
 
+            DirectoryInfo filesDir = new DirectoryInfo(Path.Combine(workDir.FullName, "files"));
+            if (!filesDir.Exists) { filesDir.Create(); }
 
             using (MagickImage img = new MagickImage(new FileInfo(Path.Combine(workDir.FullName, mapJpg))))
             {

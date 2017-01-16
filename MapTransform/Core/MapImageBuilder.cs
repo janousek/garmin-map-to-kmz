@@ -11,11 +11,14 @@ namespace Core
 {
     public class MapImageBuilder
     {
-        public string Build(string srcFilename, string destJpg, List<double> gcp, DirectoryInfo workDir)
+        public string Build(DirectoryInfo gdalDir, string srcFilePath, string destJpg, List<double> gcp, DirectoryInfo workDir)
         {
+
+
+
             string resampleOptions = "near";
 
-
+            string srcFilename = "ordesa.jpg";
 
             List<string> gcpItems = new List<string>();
             for (int i = 0; i < gcp.Count; i += 4)
@@ -25,13 +28,12 @@ namespace Core
 
             string gcpString = string.Join(" ", gcpItems);
 
-
-            File.Copy(srcFilename, Path.Combine(workDir.FullName, srcFilename), true);
+            File.Copy(srcFilePath, Path.Combine(workDir.FullName, srcFilename), true);
 
             string tempFilename = "temp";
 
 
-            Execute(workDir, "gdal_translate", $"-a_srs '+init=epsg:4326' -of VRT {srcFilename} {tempFilename}.vrt {gcpString}");
+            Execute(gdalDir, workDir, "gdal_translate", $"-a_srs '+init=epsg:4326' -of VRT {srcFilename} {tempFilename}.vrt {gcpString}");
 
             string transformOptions = "";
             string maskOptions = "";
@@ -42,29 +44,29 @@ namespace Core
                 File.Delete(Path.Combine(workDir.FullName, destFilename));
             }
 
-            Execute(workDir, "gdalwarp", $"-dstalpha {maskOptions} {transformOptions} -r {resampleOptions} -s_srs EPSG:4326 {tempFilename}.vrt {destFilename} -co TILED=YES -co COMPRESS=LZW");
+
+            Execute(gdalDir, workDir, "gdalwarp", $"-dstalpha {maskOptions} {transformOptions} -r {resampleOptions} -s_srs EPSG:4326 {tempFilename}.vrt {destFilename} -co TILED=YES -co COMPRESS=LZW ");
 
 
-            Execute(workDir, "gdaladdo", $"-r average {destFilename} 2 4 8 16 32 64");
+            Execute(gdalDir, workDir, "gdaladdo", $"-r average {destFilename} 2 4 8 16 32 64");
 
 
-            string infoJson = Execute(workDir, "gdalinfo", $"-json {destFilename}");
+            string infoJson = Execute(gdalDir, workDir, "gdalinfo", $"-json {destFilename}");
 
             // options for "-co"
             // JPG http://www.gdal.org/frmt_jpeg.html
             // PNG: http://www.gdal.org/frmt_various.html#PNG
 
-            Execute(workDir, "gdal_translate", $"-of JPEG -scale -co worldfile=yes {destFilename} {destJpg}");
+            Execute(gdalDir, workDir, "gdal_translate", $"-of JPEG -scale -co worldfile=yes {destFilename} {destJpg}");
 
             return infoJson;
         }
 
 
 
-        private string Execute(DirectoryInfo workDir, string toolName, string args)
+        private string Execute(DirectoryInfo gdalDir, DirectoryInfo workDir, string toolName, string args)
         {
-
-            DirectoryInfo gdalDir = new DirectoryInfo("../../../gdal/");
+            
             FileInfo exeFile = new FileInfo(Path.Combine(gdalDir.FullName, toolName + ".exe"));
             DirectoryInfo gdalData = new DirectoryInfo(Path.Combine(gdalDir.FullName, "data"));
             string dataPath = gdalData.FullName.Replace('\\', '/');

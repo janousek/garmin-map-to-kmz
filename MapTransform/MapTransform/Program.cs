@@ -75,9 +75,11 @@ namespace MapTransform
             string srcFilename = "mapa.jpg";
             string destJpg = "result.jpg";
 
+            DirectoryInfo gdalDir = new DirectoryInfo("../../../gdal/");
+
             MapImageBuilder mapBuilder = new MapImageBuilder();
 
-            string infoJson = mapBuilder.Build(srcFilename, destJpg, gcp, workDir);
+            string infoJson = mapBuilder.Build(gdalDir, srcFilename, destJpg, gcp, workDir);
 
             string infoJsonName = "info.json";
             File.WriteAllText(Path.Combine(workDir.FullName, infoJsonName), infoJson);

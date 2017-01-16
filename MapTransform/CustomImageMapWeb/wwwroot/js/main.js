@@ -133,7 +133,7 @@ var PreviewMap = (function () {
     return PreviewMap;
 }());
 var warper = new MapWarper('map1', 'map2');
-warper.loadImage('./ordesa.jpg');
+warper.loadImage('./mapa.jpg');
 var previewMap = new PreviewMap('preview-map');
 var points = [
     2182.0480714032 // x
@@ -189,10 +189,12 @@ document.getElementById('preview').addEventListener('click', function (e) {
         type: 'POST',
         success: function (data) {
             previewMap.show(data.jpgUrl, data.jpgCornerCoordinates);
+            document.getElementById('download-kmz').setAttribute('href', data.kmzUrl);
             console.log(data);
         }
     });
 });
-var json = '{"jpgUrl":"/result.jpg","jpgCornerCoordinates":{"upperLeft":[-0.216215,42.7543907],"lowerLeft":[-0.216215,42.4956674],"upperRight":[0.2593904,42.7543907],"lowerRight":[0.2593904,42.4956674]}}';
+var json = '{"jpgUrl":"/result.jpg","jpgCornerCoordinates":{"upperLeft":[-0.216215,42.7543907],"lowerLeft":[-0.216215,42.4956674],"upperRight":[0.2593904,42.7543907],"lowerRight":[0.2593904,42.4956674]},"kmzUrl": "/result.kmz"}';
 var jsonData = JSON.parse(json);
 previewMap.show(jsonData.jpgUrl, jsonData.jpgCornerCoordinates);
+document.getElementById('download-kmz').setAttribute('href', jsonData.kmzUrl);

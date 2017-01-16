@@ -212,7 +212,7 @@ class PreviewMap {
 
 
 let warper = new MapWarper('map1', 'map2');
-warper.loadImage('./ordesa.jpg');
+warper.loadImage('./mapa.jpg');
 
 
 let previewMap = new PreviewMap('preview-map');
@@ -289,6 +289,9 @@ document.getElementById('preview').addEventListener('click', (e) => {
         success: function (data) {
 
             previewMap.show(data.jpgUrl, data.jpgCornerCoordinates);
+
+            document.getElementById('download-kmz').setAttribute('href', data.kmzUrl);
+
             console.log(data);
         }
     });
@@ -296,9 +299,11 @@ document.getElementById('preview').addEventListener('click', (e) => {
 
 
 
-let json = '{"jpgUrl":"/result.jpg","jpgCornerCoordinates":{"upperLeft":[-0.216215,42.7543907],"lowerLeft":[-0.216215,42.4956674],"upperRight":[0.2593904,42.7543907],"lowerRight":[0.2593904,42.4956674]}}';
+let json = '{"jpgUrl":"/result.jpg","jpgCornerCoordinates":{"upperLeft":[-0.216215,42.7543907],"lowerLeft":[-0.216215,42.4956674],"upperRight":[0.2593904,42.7543907],"lowerRight":[0.2593904,42.4956674]},"kmzUrl": "/result.kmz"}';
 
 
 let jsonData = JSON.parse(json);
 
 previewMap.show(jsonData.jpgUrl, jsonData.jpgCornerCoordinates);
+
+document.getElementById('download-kmz').setAttribute('href', jsonData.kmzUrl);

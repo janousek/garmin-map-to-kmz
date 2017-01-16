@@ -14,11 +14,11 @@ namespace Core
 {
     public class GarminKmzBuilder
     {
-        public void Build(DirectoryInfo workDir, string infoJsonName, string mapPath, string mapName)
+        public string Build(DirectoryInfo workDir, string infoJsonName, string mapPath, string mapName)
         {
             List<GroundOverlay> overlays = PrepareOverlays(workDir, infoJsonName, mapPath);
 
-            BuildKmz(workDir, mapName, overlays);
+            return BuildKmz(workDir, mapName, overlays);
         }
 
 
@@ -98,7 +98,7 @@ namespace Core
 
 
 
-        public void BuildKmz(DirectoryInfo workDir, string mapName, List<GroundOverlay> overlays)
+        public string BuildKmz(DirectoryInfo workDir, string mapName, List<GroundOverlay> overlays)
         {
 
             Document doc = new Document()
@@ -131,8 +131,9 @@ namespace Core
                 kml.Save(stream);
             }
 
+            string kmzPath = Path.Combine(workDir.FullName, "result.kmz");
 
-            using (FileStream zipToOpen = new FileStream(Path.Combine(workDir.FullName, "result.kmz"), FileMode.OpenOrCreate))
+            using (FileStream zipToOpen = new FileStream(kmzPath, FileMode.OpenOrCreate))
             {
                 zipToOpen.SetLength(0);
                 zipToOpen.Seek(0, SeekOrigin.Begin);
@@ -148,7 +149,7 @@ namespace Core
                 }
             }
 
-
+            return kmzPath;
         }
 
 

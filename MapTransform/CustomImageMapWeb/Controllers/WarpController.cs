@@ -44,25 +44,29 @@ namespace CustomImageMapWeb.Controllers
 
 
             string srcFilePath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("mapa.jpg").PhysicalPath;
-            string destPath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("result.jpg").PhysicalPath;
+            string destMapPath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("result.jpg").PhysicalPath;
+            string destKmzPath = this.hostingEnvironment.WebRootFileProvider.GetFileInfo("result.kmz").PhysicalPath;
 
             MapImageBuilder mapBuilder = new MapImageBuilder();
 
-            string infoJson = mapBuilder.Build(gdalDir, srcFilePath, destPath, form.Gcp.Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToList(), workDir);
+            string infoJson = mapBuilder.Build(gdalDir, srcFilePath, destMapPath, form.Gcp.Select(x => double.Parse(x, CultureInfo.InvariantCulture)).ToList(), workDir);
 
             string infoJsonName = "info.json";
             System.IO.File.WriteAllText(Path.Combine(workDir.FullName, infoJsonName), infoJson);
 
             GarminKmzBuilder kmzBuilder = new GarminKmzBuilder();
-            kmzBuilder.Build(workDir, infoJsonName, destPath, mapName);
+            string kmzPath = kmzBuilder.Build(workDir, infoJsonName, destMapPath, mapName);
 
+
+            System.IO.File.Copy(kmzPath, destKmzPath, true);
 
             
             TiffJsonInfo info = JsonConvert.DeserializeObject<TiffJsonInfo>(infoJson);
 
             return new JsonResult(new {
                 JpgUrl = Url.Content("~/result.jpg"),
-                JpgCornerCoordinates = info.CornerCoordinates
+                JpgCornerCoordinates = info.CornerCoordinates,
+                KmzUrl = Url.Content("~/result.kmz"),
             });
         }
         

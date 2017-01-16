@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.StaticFiles;
 
 namespace CustomImageMapWeb
 {
@@ -47,7 +48,17 @@ namespace CustomImageMapWeb
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseStaticFiles();
+
+
+            
+            var provider = new FileExtensionContentTypeProvider();
+            provider.Mappings[".kmz"] = "application/vnd.google-earth.kmz";
+
+            app.UseStaticFiles(new StaticFileOptions()
+            {
+                ContentTypeProvider = provider
+            });
+            
 
             app.UseMvc(routes =>
             {

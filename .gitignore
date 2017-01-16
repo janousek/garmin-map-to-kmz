@@ -6,3 +6,6 @@
 /MapTransform/Core/bin/
 /MapTransform/CustomImageMapWeb/node_modules/
 /MapTransform/.vs/restore.dg
+/MapTransform/CustomImageMapWeb/bin/
+/MapTransform/CustomImageMapWeb/obj/
+/MapTransform/CustomImageMapWeb/App_Data/tmp/

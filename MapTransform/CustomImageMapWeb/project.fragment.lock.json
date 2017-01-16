@@ -1,0 +1,25 @@
+{
+  "version": 2,
+  "exports": {
+    "Core/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.6",
+      "compile": {
+        "bin/Debug/Core.dll": {}
+      },
+      "runtime": {
+        "../packages/Magick.NET-Q16-AnyCPU.7.0.4.100/lib/net40-client/Magick.NET-Q16-AnyCPU.dll": {},
+        "../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
+        "../packages/SharpKml.Core.3.0.0/lib/portable45-net45+win8+wpa81/SharpKml.dll": {},
+        "bin/Debug/Core.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/Core.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    }
+  }
+}
